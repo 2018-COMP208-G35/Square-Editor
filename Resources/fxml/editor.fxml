@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.paint.*?>
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="controller.Controller"
+            prefHeight="700.0" prefWidth="1000.0" stylesheets="@/css/javaFX/editor.css">
+    <MenuBar useSystemMenuBar="true">
+        <!--todo title bar-->
+        <Menu text="File">
+            <!--<MenuItem>New</MenuItem>-->
+            <!--<MenuItem>Save</MenuItem>-->
+            <!--<MenuItem>Save As</MenuItem>-->
+        </Menu>
+        <Menu text="Insert">
+
+        </Menu>
+    </MenuBar>
+    <top>
+        <VBox>
+            <TabPane>
+                <Tab closable="false" text="File">
+                    <HBox styleClass="tab-content">
+                        <Button text="New" fx:id="newFileBtn" onAction="#newFile">
+                            <graphic>
+                                <ImageView fitWidth="40" fitHeight="40">
+                                    <Image url="/icons/new.png"/>
+                                </ImageView>
+                            </graphic>
+                        </Button>
+
+                        <Button text="Save" fx:id="saveFileBtn" onAction="#saveFile">
+                            <graphic>
+                                <ImageView fitWidth="40" fitHeight="40" styleClass="normal-icon">
+                                    <Image url="/icons/save.png"/>
+                                </ImageView>
+                            </graphic>
+                        </Button>
+
+                        <Button text="Open" fx:id="openFileBtn" onAction="#openFile">
+                            <graphic>
+                                <ImageView fitWidth="40" fitHeight="40">
+                                    <Image url="/icons/open.png"/>
+                                </ImageView>
+                            </graphic>
+                        </Button>
+
+                        <Button text="Export" fx:id="exportToBtn" onAction="#exportToHTML">
+                            <graphic>
+                                <ImageView fitWidth="40" fitHeight="40">
+                                    <Image url="/icons/exportto.png"/>
+                                </ImageView>
+                            </graphic>
+                        </Button>
+
+                        <Button text="View" fx:id="viewInBrowserBtn" onAction="#viewInBrowser">
+                            <graphic>
+                                <ImageView fitWidth="40" fitHeight="40">
+                                    <Image url="/icons/open_in_browser.png"/>
+                                </ImageView>
+                            </graphic>
+                        </Button>
+
+                    </HBox>
+                </Tab>
+
+                <Tab closable="false" text="Edit">
+                    <HBox styleClass="tab-content">
+                        <padding>
+                            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
+                        </padding>
+
+                        <MenuButton text="Section">
+                            <graphic>
+                                <ImageView fitWidth="40" fitHeight="40">
+                                    <Image url="/icons/semantics/section_120.png"/>
+                                </ImageView>
+                            </graphic>
+                            <items>
+                                <MenuItem fx:id="sectionItem" text="Seciton (⌘ / Ctrl + 1)"/>
+                                <MenuItem fx:id="subSectionItem" text="Subsection (⌘ / Ctrl + 2)"/>
+                                <MenuItem fx:id="subSubSectionItem" text="Subsubsection (⌘ / Ctrl + 3)"/>
+                            </items>
+                        </MenuButton>
+
+                        <Button text="Quote" fx:id="quoteBtn">
+                            <tooltip>
+                                <Tooltip text="Quote text"/>
+                            </tooltip>
+                            <graphic>
+                                <ImageView fitWidth="40" fitHeight="40">
+                                    <Image url="/icons/semantics/quote_80.png"/>
+                                </ImageView>
+                            </graphic>
+                        </Button>
+
+                        <!--<Button text="Image">-->
+                        <!--<tooltip>-->
+                        <!--<Tooltip text="Add image"/>-->
+                        <!--</tooltip>-->
+                        <!--<graphic>-->
+                        <!--<ImageView fitWidth="40" fitHeight="40">-->
+                        <!--<Image url="/icons/semantics/image_80.png"/>-->
+                        <!--</ImageView>-->
+                        <!--</graphic>-->
+                        <!--</Button>-->
+
+                    </HBox>
+                </Tab>
+
+                <Tab closable="false" text="Style">
+                    <HBox styleClass="tab-content" alignment="CENTER">
+                        <GridPane gridLinesVisible="false" hgap="10" vgap="5">
+                            <Label text="Title Color:" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+                            <ColorPicker fx:id="titleColorPicker"
+                                         onAction="#setTitleColor"
+                                         GridPane.columnIndex="1" GridPane.rowIndex="0">
+                                <value>
+                                    <Color blue="0" green="0" red="0"/>
+                                </value>
+                            </ColorPicker>
+
+                            <Label text="Author Color:" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+                            <ColorPicker fx:id="authoerColorPicker"
+                                         onAction="#setAuthorColor"
+                                         GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                <value>
+                                    <Color blue="0" green="0" red="0"/>
+                                </value>
+                            </ColorPicker>
+
+                            <Label text="Sections Color:" GridPane.columnIndex="2" GridPane.rowIndex="0"/>
+                            <ColorPicker fx:id="sectionsColorPicker"
+                                         onAction="#setSectionsColor"
+                                         GridPane.columnIndex="3" GridPane.rowIndex="0">
+                                <value>
+                                    <Color blue="0" green="0" red="0"/>
+                                </value>
+                            </ColorPicker>
+
+                            <Label text="Paragraph Color:" GridPane.columnIndex="2" GridPane.rowIndex="1"/>
+                            <ColorPicker fx:id="paragraphColorPicker"
+                                         onAction="#setParagraphColor"
+                                         GridPane.columnIndex="3" GridPane.rowIndex="1">
+                                <value>
+                                    <Color blue="0" green="0" red="0"/>
+                                </value>
+                            </ColorPicker>
+
+                            <Label text="Quote Color:" GridPane.columnIndex="4" GridPane.rowIndex="0"/>
+                            <ColorPicker fx:id="quoteColorPicker"
+                                         onAction="#setQuoteColor"
+                                         GridPane.columnIndex="5" GridPane.rowIndex="0">
+                                <value>
+                                    <Color blue="0" green="0" red="0"/>
+                                </value>
+                            </ColorPicker>
+                        </GridPane>
+                    </HBox>
+
+
+                </Tab>
+            </TabPane>
+
+            <!-- Suggestion bar-->
+            <HBox
+                    spacing="10"
+                    alignment="CENTER_LEFT"
+                    style="-fx-background-color: rgba(0,0,0,0.1);-fx-border-color: rgba(0,0,0,0.2);-fx-border-width: 1 0">
+                <padding>
+                    <Insets bottom="2.0" left="20.0" right="2.0" top="2.0"/>
+                </padding>
+                <Label text="Current Structure" fx:id="currentStructure"/>
+                <Button text="Title" fx:id="intelligentSuggest"/>
+            </HBox>
+
+        </VBox>
+    </top>
+
+
+    <center>
+        <ScrollPane focusTraversable="false" fx:id="scrollContainer" styleClass="scroll-pane" fitToWidth="true">
+            <HBox alignment="CENTER" fx:id="articleContainer">
+            </HBox>
+        </ScrollPane>
+
+    </center>
+
+    <bottom>
+        <HBox
+                style="-fx-border-color: rgba(0,0,0,0.3);-fx-border-width:1 0;-fx-background-color: linear-gradient(to right, rgba(0,0,0,0.1), rgba(0,0,0,0.05));">
+            <padding>
+                <Insets bottom="5.0" left="10.0" right="10.0" top="5.0"/>
+            </padding>
+            <Label text="Status" fx:id="status"/>
+            <Label alignment="CENTER_RIGHT" maxWidth="Infinity" text="Group 35 sdasdasd" HBox.hgrow="ALWAYS"/>
+        </HBox>
+    </bottom>
+
+
+</BorderPane>
