@@ -1,0 +1,22 @@
+* {
+    -fx-focus-traversable: false;
+}
+
+.scroll-pane {
+    -fx-fit-to-height: false;
+}
+
+.button, .menu-button {
+    -fx-content-display: top;
+}
+
+.tab-content {
+    -fx-spacing: 3;
+    -fx-padding: 10 10 10 10;
+}
+
+.normal-icon {
+
+}
+
+

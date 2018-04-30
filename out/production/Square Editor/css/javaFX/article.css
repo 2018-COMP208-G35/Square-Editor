@@ -1,0 +1,36 @@
+.paper {
+    -fx-spacing: 5;
+    -fx-background-color: white;
+    -fx-alignment: center;
+    -fx-padding: 20;
+    -fx-pref-width: 700;
+}
+
+.main-title {
+    -fx-padding: 20 0;
+}
+
+.author{
+    -fx-padding: 10 0;
+}
+
+.section {
+    -fx-padding: 5 0;
+}
+
+.paragraph {
+    /*-fx-border-color: red;*/
+    -fx-padding: 5 0;
+}
+
+.section .node {
+    /*-fx-fill: #b95590;*/
+}
+
+.quote {
+    -fx-padding: 10 0;
+}
+
+.quote .node {
+    /*-fx-fill: #b95590;*/
+}

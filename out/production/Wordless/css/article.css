@@ -1,0 +1,6 @@
+.paper {
+    -fx-spacing: 5;
+    -fx-background-color: white;
+    -fx-padding: 20;
+    -fx-pref-width: 700;
+}

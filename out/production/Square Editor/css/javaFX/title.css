@@ -1,0 +1,7 @@
+.title {
+    -fx-border-color: green;
+}
+
+.text-line {
+    -fx-alignment: CENTER;
+}
