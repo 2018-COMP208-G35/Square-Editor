@@ -7,111 +7,95 @@ import javafx.scene.paint.Paint;
 
 public class Painter {
     private static Painter painter = new Painter();
+    ObjectProperty<Paint> titleColor;
+    ObjectProperty<Paint> authorColor;
+    ObjectProperty<Paint> paragraphColor;
+    ObjectProperty<Paint> quoteColor;
+    ObjectProperty<Paint> sectionColor;
 
-    ObjectProperty<Paint> titleColor = new SimpleObjectProperty<>(Color.BLACK);
-    ObjectProperty<Paint> authorColor = new SimpleObjectProperty<>(Color.BLACK);
-    ObjectProperty<Paint> paragraphColor = new SimpleObjectProperty<>(Color.BLACK);
-    ObjectProperty<Paint> quoteColor = new SimpleObjectProperty<>(Color.BLACK);
-    ObjectProperty<Paint> sectionColor = new SimpleObjectProperty<>(Color.BLACK);
-
-    public static Painter getInstance()
-    {
+    public static Painter getInstance() {
         return painter;
     }
 
-    private Painter()
-    {
+    private Painter() {
+        this.titleColor = new SimpleObjectProperty(Color.BLACK);
+        this.authorColor = new SimpleObjectProperty(Color.BLACK);
+        this.paragraphColor = new SimpleObjectProperty(Color.BLACK);
+        this.quoteColor = new SimpleObjectProperty(Color.BLACK);
+        this.sectionColor = new SimpleObjectProperty(Color.BLACK);
     }
 
-    public static Painter getPainter()
-    {
+    public static Painter getPainter() {
         return painter;
     }
 
-    public static void setPainter(Painter painter)
-    {
-        Painter.painter = painter;
+    public static void setPainter(Painter painter) {
+        painter = painter;
     }
 
-    public Paint getTitleColor()
-    {
-        return titleColor.get();
+    public Paint getTitleColor() {
+        return (Paint)this.titleColor.get();
     }
 
-    public ObjectProperty<Paint> titleColorProperty()
-    {
-        return titleColor;
+    public ObjectProperty<Paint> titleColorProperty() {
+        return this.titleColor;
     }
 
-    public void setTitleColor(Paint titleColor)
-    {
+    public void setTitleColor(Paint titleColor) {
         this.titleColor.set(titleColor);
     }
 
-    public Paint getAuthorColor()
-    {
-        return authorColor.get();
+    public Paint getAuthorColor() {
+        return (Paint)this.authorColor.get();
     }
 
-    public ObjectProperty<Paint> authorColorProperty()
-    {
-        return authorColor;
+    public ObjectProperty<Paint> authorColorProperty() {
+        return this.authorColor;
     }
 
-    public void setAuthorColor(Paint authorColor)
-    {
+    public void setAuthorColor(Paint authorColor) {
         this.authorColor.set(authorColor);
     }
 
-    public Paint getParagraphColor()
-    {
-        return paragraphColor.get();
+    public Paint getParagraphColor() {
+        return (Paint)this.paragraphColor.get();
     }
 
-    public ObjectProperty<Paint> paragraphColorProperty()
-    {
-        return paragraphColor;
+    public ObjectProperty<Paint> paragraphColorProperty() {
+        return this.paragraphColor;
     }
 
-    public void setParagraphColor(Paint paragraphColor)
-    {
+    public void setParagraphColor(Paint paragraphColor) {
         this.paragraphColor.set(paragraphColor);
     }
 
-    public Paint getQuoteColor()
-    {
-        return quoteColor.get();
+    public Paint getQuoteColor() {
+        return (Paint)this.quoteColor.get();
     }
 
-    public ObjectProperty<Paint> quoteColorProperty()
-    {
-        return quoteColor;
+    public ObjectProperty<Paint> quoteColorProperty() {
+        return this.quoteColor;
     }
 
-    public void setQuoteColor(Paint quoteColor)
-    {
+    public void setQuoteColor(Paint quoteColor) {
         this.quoteColor.set(quoteColor);
     }
 
-    public Paint getSectionColor()
-    {
-        return sectionColor.get();
+    public Paint getSectionColor() {
+        return (Paint)this.sectionColor.get();
     }
 
-    public ObjectProperty<Paint> sectionColorProperty()
-    {
-        return sectionColor;
+    public ObjectProperty<Paint> sectionColorProperty() {
+        return this.sectionColor;
     }
 
-    public void setSectionColor(Paint sectionColor)
-    {
+    public void setSectionColor(Paint sectionColor) {
         this.sectionColor.set(sectionColor);
     }
 
-    public String toCSS()
-    {
+    public String toCSS() {
         StringBuilder css = new StringBuilder();
-        css.append(".title { color: " + ((Color) titleColor.getValue()).getRed()); // todo get css
+        css.append(".title { color: " + ((Color)this.titleColor.getValue()).getRed());
         return null;
     }
 }

@@ -7,112 +7,88 @@ import javafx.beans.property.SimpleObjectProperty;
 import javafx.scene.text.Font;
 
 public class Page {
-
     private static String fontFamily;
+    private static DoubleProperty PagePadding = new SimpleDoubleProperty(30.0D);
+    private static DoubleProperty TitleFontSize = new SimpleDoubleProperty(40.0D);
+    private static ObjectProperty<Font> titleFont = new SimpleObjectProperty(new Font("Times New Roman", 34.0D));
+    private static DoubleProperty SectionFontSize = new SimpleDoubleProperty(30.0D);
+    private static DoubleProperty SubsectionFontSize = new SimpleDoubleProperty(25.0D);
+    private static DoubleProperty FontSize = new SimpleDoubleProperty(30.0D);
+    private static DoubleProperty lineWidthLimit = new SimpleDoubleProperty(650.0D);
+    private static DoubleProperty lineSpacing = new SimpleDoubleProperty(1.5D);
 
-    private static DoubleProperty PagePadding = new SimpleDoubleProperty(30);
+    private Page() {
+    }
 
-    private static DoubleProperty TitleFontSize = new SimpleDoubleProperty(40);
-
-    private static ObjectProperty<Font> titleFont = new SimpleObjectProperty<>(new Font("Times New Roman", 34));
-
-    private static DoubleProperty SectionFontSize = new SimpleDoubleProperty(30);
-
-    private static DoubleProperty SubsectionFontSize = new SimpleDoubleProperty(25);
-
-    private static DoubleProperty FontSize = new SimpleDoubleProperty(30);
-
-    private static DoubleProperty lineWidthLimit = new SimpleDoubleProperty(650);
-
-    private static DoubleProperty lineSpacing = new SimpleDoubleProperty(1.5);
-
-    public static double getPagePadding()
-    {
+    public static double getPagePadding() {
         return PagePadding.get();
     }
 
-    public static DoubleProperty pagePaddingProperty()
-    {
+    public static DoubleProperty pagePaddingProperty() {
         return PagePadding;
     }
 
-    public Page(String fontFamily)
-    {
-        this.fontFamily = fontFamily;
+    public Page(String fontFamily) {
+        fontFamily = fontFamily;
     }
 
-    public static String getFontFamily()
-    {
+    public static String getFontFamily() {
         return fontFamily;
     }
 
-    public static double getTitleFontSize()
-    {
+    public static double getTitleFontSize() {
         return TitleFontSize.get();
     }
 
-    public static DoubleProperty titleFontSizeProperty()
-    {
+    public static DoubleProperty titleFontSizeProperty() {
         return TitleFontSize;
     }
 
-    public static Font getTitleFont()
-    {
-        return titleFont.get();
+    public static Font getTitleFont() {
+        return (Font)titleFont.get();
     }
 
-    public static ObjectProperty<Font> titleFontProperty()
-    {
+    public static ObjectProperty<Font> titleFontProperty() {
         return titleFont;
     }
 
-    public static double getSectionFontSize()
-    {
+    public static double getSectionFontSize() {
         return SectionFontSize.get();
     }
 
-    public static DoubleProperty sectionFontSizeProperty()
-    {
+    public static DoubleProperty sectionFontSizeProperty() {
         return SectionFontSize;
     }
 
-    public static double getSubsectionFontSize()
-    {
+    public static double getSubsectionFontSize() {
         return SubsectionFontSize.get();
     }
 
-    public static DoubleProperty subsectionFontSizeProperty()
-    {
+    public static DoubleProperty subsectionFontSizeProperty() {
         return SubsectionFontSize;
     }
 
-    public static double getFontSize()
-    {
+    public static double getFontSize() {
         return FontSize.get();
     }
 
-    public static DoubleProperty fontSizeProperty()
-    {
+    public static DoubleProperty fontSizeProperty() {
         return FontSize;
     }
 
-    public static double getLineWidthLimit()
-    {
+    public static double getLineWidthLimit() {
         return lineWidthLimit.get();
     }
 
-    public static DoubleProperty lineWidthLimitProperty()
-    {
+    public static DoubleProperty lineWidthLimitProperty() {
         return lineWidthLimit;
     }
 
-    public static double getLineSpacing()
-    {
+    public static double getLineSpacing() {
         return lineSpacing.get();
     }
 
-    public static DoubleProperty lineSpacingProperty()
-    {
+    public static DoubleProperty lineSpacingProperty() {
         return lineSpacing;
     }
 }

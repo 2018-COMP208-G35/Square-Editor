@@ -5,25 +5,33 @@ import javafx.scene.control.Toggle;
 import javafx.scene.control.ToggleGroup;
 import view.Caret;
 
-public class CaretHelper {
+
+public class CaretHelper
+{
+    private static CaretHelper caretHelper = new CaretHelper();
     private static ToggleGroup caretGroup = new ToggleGroup();
 
+    private CaretHelper()
+    {
+    }
 
-    public static ToggleGroup getCaretGroup()
+    public static CaretHelper getInstance()
+    {
+        return caretHelper;
+    }
+
+    public ToggleGroup getCaretGroup()
     {
         return caretGroup;
     }
 
-    public static Caret getSelectedCaret()
+    public Caret getSelectedCaret()
     {
         return (Caret) caretGroup.getSelectedToggle().getUserData();
-
     }
 
-    public static ReadOnlyObjectProperty<Toggle> getSelectedCaretProperty()
+    public ReadOnlyObjectProperty<Toggle> getSelectedCaretProperty()
     {
         return caretGroup.selectedToggleProperty();
     }
-
-
 }

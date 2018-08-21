@@ -1,5 +1,8 @@
 package view.container;
 
+import java.util.Iterator;
+
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.input.KeyCode;
@@ -8,48 +11,42 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import model.semantic.Semantic;
 import view.Caret;
-import view.concrete.*;
+import view.concrete.Author;
+import view.concrete.MainTitle;
+import view.concrete.Paragraph;
+import view.concrete.Quote;
+import view.concrete.SectionTitle;
+import view.concrete.SubSectionTitle;
+import view.concrete.SubSubSectionTitle;
 import view.helper.CaretHelper;
 import view.helper.Page;
 import view.helper.Painter;
 import view.helper.Theme;
 
-public class Article extends VBox {
-
+public class Article extends VBox
+{
     private Theme theme;
 
     public Article(Theme theme)
     {
         this.theme = theme;
-        setUpLayout();
-        setUpKeyListener();
+        this.setUpLayout();
+        this.setUpKeyListener();
         TextSection textSection = new Paragraph(theme.getParagraphFontFamily(), theme.getParagraphFontSize());
         textSection.payAttention();
-        getChildren().add(textSection);
-    }
-
-
-    public enum Structure {
-        MAIN_TITLE,
-        SECTION_TITLE,
-        SUBSECTION_TITLE,
-        SUBSUBSECTION_TITLE,
-        PARAGRAPH,
-        QUOTE,
-        AUTHOR
+        this.getChildren().add(textSection);
     }
 
     private void setUpLayout()
     {
-        getStylesheets().add("/css/javaFX/article.css");
-        getStyleClass().add("paper");
-        setPadding(new Insets(Page.getPagePadding()));
+        this.getStylesheets().add("/css/javaFX/article.css");
+        this.getStyleClass().add("paper");
+        this.setPadding(new Insets(Page.getPagePadding()));
     }
 
     private void setUpKeyListener()
     {
         this.addEventFilter(KeyEvent.KEY_PRESSED, this::getOnKeyPressed);
-//        this.setOnKeyPressed(this::getOnKeyPressed);
     }
 
     private void getOnKeyPressed(KeyEvent keyEvent)
@@ -57,180 +54,112 @@ public class Article extends VBox {
         KeyCode keyCode = keyEvent.getCode();
         String text = keyEvent.getText();
         System.out.println("Article: Key: " + keyCode + ", Text: " + text);
-        TextLine currentLine = ((TextLine) CaretHelper.getSelectedCaret().getParent());
+        TextLine currentLine = (TextLine) CaretHelper.getInstance().getSelectedCaret().getParent();
         Section currentSection = (Section) currentLine.getParent();
-        if (keyEvent.isMetaDown() || keyEvent.isControlDown())
-        { // Control in windows, Command in MAC
-            if (keyCode.isDigitKey())
-            {
-                if (keyCode.equals(KeyCode.DIGIT1))
-                {
-                    createNewSectionAfterCaret(Structure.SECTION_TITLE);
-                }
-                else if (keyCode.equals(KeyCode.DIGIT2))
-                {
-                    // todo create a new sub section title
-                    createNewSectionAfterCaret(Structure.SUBSECTION_TITLE);
-                }
-                else if (keyCode.equals(KeyCode.DIGIT3))
-                {
-                    // todo create a new subsub section title
-                    createNewSectionAfterCaret(Structure.SUBSUBSECTION_TITLE);
-                }
-
-            }
-            else if (keyCode.equals(KeyCode.B))
-            {
-                // todo toggle button
-                // set currentEditing state to Bold
-                if (currentSection instanceof Paragraph)
-                {
-                    if (((TextSection) currentSection).getCurrentSemantic().equals(Semantic.STRONG))
-                    {
-                        ((TextSection) currentSection).setCurrentSemantic(Semantic.NORMAL);
-                    }
-                    else
-                    {
-                        ((TextSection) currentSection).setCurrentSemantic(Semantic.STRONG);
-                    }
-
-                }
-            }
-            else if (keyCode.equals(KeyCode.I))
-            {
-                // todo toggle button
-                if (currentSection instanceof Paragraph)
-                {
-                    if (((TextSection) currentSection).getCurrentSemantic() == Semantic.EMPHASIS)
-                    {
-                        ((TextSection) currentSection).setCurrentSemantic(Semantic.NORMAL);
-                    }
-                    else
-                    {
-                        ((TextSection) currentSection).setCurrentSemantic(Semantic.EMPHASIS);
-                    }
-
-                }
-            }
-            else if (keyCode.equals(KeyCode.K))
-            {
-                createNewSectionAfterCaret(Structure.QUOTE);
-            }
-        }
-        else if (keyCode.isModifierKey())
+        if (!keyEvent.isMetaDown() && !keyEvent.isControlDown())
         {
-
-        }
-        else if (keyCode.equals(KeyCode.ESCAPE)) // set semantic back to normal
+            if (!keyCode.isModifierKey())
+            {
+                if (keyCode.equals(KeyCode.ESCAPE))
+                {
+                    if (currentSection instanceof Paragraph)
+                    {
+                        ((TextSection) currentSection).setCurrentSemantic(Semantic.NORMAL);
+                        keyEvent.consume();
+                    }
+                } else if (keyCode.isArrowKey() && !keyCode.equals(KeyCode.UP) && !keyCode.equals(KeyCode.DOWN) && !keyCode.equals(KeyCode.LEFT) && keyCode.equals(KeyCode.RIGHT))
+                {
+                    ;
+                }
+            }
+        } else if (keyCode.isDigitKey())
+        {
+            if (keyCode.equals(KeyCode.DIGIT1))
+            {
+                this.createNewSectionAfterCaret(Article.Structure.SECTION_TITLE);
+            } else if (keyCode.equals(KeyCode.DIGIT2))
+            {
+                this.createNewSectionAfterCaret(Article.Structure.SUBSECTION_TITLE);
+            } else if (keyCode.equals(KeyCode.DIGIT3))
+            {
+                this.createNewSectionAfterCaret(Article.Structure.SUBSUBSECTION_TITLE);
+            }
+        } else if (keyCode.equals(KeyCode.B))
         {
             if (currentSection instanceof Paragraph)
             {
-                ((TextSection) currentSection).setCurrentSemantic(Semantic.NORMAL);
+                if (((TextSection) currentSection).getCurrentSemantic().equals(Semantic.STRONG))
+                {
+                    ((TextSection) currentSection).setCurrentSemantic(Semantic.NORMAL);
+                } else
+                {
+                    ((TextSection) currentSection).setCurrentSemantic(Semantic.STRONG);
+                }
             }
-        }
-        else if (keyCode.isArrowKey())
+        } else if (keyCode.equals(KeyCode.I))
         {
-            // move the caret around
-            if (keyCode.equals(KeyCode.UP))
+            if (currentSection instanceof Paragraph)
             {
-                // todo move caret up
-
+                if (((TextSection) currentSection).getCurrentSemantic() == Semantic.EMPHASIS)
+                {
+                    ((TextSection) currentSection).setCurrentSemantic(Semantic.NORMAL);
+                } else
+                {
+                    ((TextSection) currentSection).setCurrentSemantic(Semantic.EMPHASIS);
+                }
             }
-            else if (keyCode.equals(KeyCode.DOWN))
-            {
-                // todo move caret down
-            }
-            else if (keyCode.equals(KeyCode.LEFT))
-            {
-                // todo move caret left
-//                 moveCaretLeft();
-            }
-            else if (keyCode.equals(KeyCode.RIGHT))
-            {
-                // todo move caret right
-//                 moveCaretRight();
-            }
+        } else if (keyCode.equals(KeyCode.K))
+        {
+            this.createNewSectionAfterCaret(Article.Structure.QUOTE);
         }
+
         if (keyCode.isWhitespaceKey())
         {
             if (keyCode.equals(KeyCode.ENTER))
             {
-                // create a new line
-
-                // if current section is also a paragraph, add the words after caret to the new paragraph
                 if (currentSection instanceof Paragraph)
                 {
                     Word word = ((Paragraph) currentSection).getAllContentNodesAfterCaret();
-
-                    Section newSection = createNewSectionAfterCaret(Structure.PARAGRAPH);
+                    Section newSection = this.createNewSectionAfterCaret(Article.Structure.PARAGRAPH);
                     ((Paragraph) newSection).add(word);
                     newSection.payAttention();
-                }
-                else
+                } else
                 {
-                    Section newSection = createNewSectionAfterCaret(Structure.PARAGRAPH);
+                    Section var10 = this.createNewSectionAfterCaret(Article.Structure.PARAGRAPH);
                 }
-
-
-                // todo bring text after the caret to next paragraph
-            }
-            else if (keyCode.equals(KeyCode.SPACE))
+            } else if (keyCode.equals(KeyCode.SPACE))
             {
-//                 add(new Text(text));
+                ;
             }
-        }
-        else if (keyCode.equals(KeyCode.SHIFT))
+        } else if (!keyCode.equals(KeyCode.SHIFT))
         {
-
-        }
-        else if (keyCode.equals(KeyCode.BACK_SPACE))
-        {
-            if (currentSection.isEmpty())
+            if (keyCode.equals(KeyCode.BACK_SPACE))
             {
-                removeSection(currentSection);
-
-                keyEvent.consume();
-            }
-            else
-                // todo when current section has empty lines, remove it
-                if (currentSection instanceof Paragraph)
+                if (currentSection.isEmpty())
                 {
-
-                    // At head of paragraph
-                    if (currentLine.getCaretPosition() == 0 &&
-                            ((TextSection) currentSection).getLineIndexInThisParagraph(currentLine) == 0)
+                    this.removeSection(currentSection);
+                    keyEvent.consume();
+                } else if (currentSection instanceof Paragraph && currentLine.getCaretPosition() == 0 && ((TextSection) currentSection).getLineIndexInThisParagraph(currentLine) == 0)
+                {
+                    Paragraph previousSection = (Paragraph) currentSection.getPreviousSection();
+                    if (previousSection != null)
                     {
-                        // todo put text in this section to previous section and remove this section
-                        Paragraph previousSection = (Paragraph) currentSection.getPreviousSection();
-                        if (previousSection != null)
-                        {
-                            // todo get text in currentSection
-                            // todo add to the end of previous section
-                            Word wordsInCurrentSection = ((Paragraph) currentSection).getAllWords();
-                            previousSection.payAttentionToEnd();
-                            TextLine lastLineOfPreviousSection = ((TextLine) previousSection.getChildren().get(previousSection.getNumberOfLines() - 1));
-                            Caret lastCaret = lastLineOfPreviousSection.getCaret(lastLineOfPreviousSection.getNumberOfCaret() - 1);
-                            previousSection.add(wordsInCurrentSection);
-                            // remove current section
-                            removeSection(currentSection);
-                            lastCaret.show();
-                            keyEvent.consume(); // don't let layer under
-                            // re pay attention
-
-//                            previousSection.
-                        }
-                        else
-                        {
-                            // do nothing
-                        }
+                        Word wordsInCurrentSection = ((Paragraph) currentSection).getAllWords();
+                        previousSection.payAttentionToEnd();
+                        TextLine lastLineOfPreviousSection = (TextLine) previousSection.getChildren().get(previousSection.getNumberOfLines() - 1);
+                        Caret lastCaret = lastLineOfPreviousSection.getCaret(lastLineOfPreviousSection.getNumberOfCaret() - 1);
+                        previousSection.add(wordsInCurrentSection);
+                        this.removeSection(currentSection);
+                        lastCaret.show();
+                        keyEvent.consume();
                     }
-
                 }
+            } else if (keyCode.isLetterKey())
+            {
+                ;
+            }
         }
-        else if (keyCode.isLetterKey())
-        {
-//             add(new Text(text));
-        }
+
     }
 
     private void removeSection(Section currentSection)
@@ -243,210 +172,200 @@ public class Article extends VBox {
             {
                 previousSection.setNextSection(nextSection);
                 nextSection.setPreviousSection(previousSection);
-            }
-            else
+            } else
             {
-                previousSection.setNextSection(null);
+                previousSection.setNextSection((Section) null);
             }
+
             this.getChildren().remove(currentSection);
             previousSection.payAttentionToEnd();
-        }
-        else
+        } else if (nextSection != null)
         {
-            if (nextSection != null)
-            {
-                nextSection.setPreviousSection(null);
-                this.getChildren().remove(currentSection);
-                nextSection.payAttention();
-            }
-            else
-            {
-                // do nothing
-            }
-
-            // do nothing since previous section is empty
-            // todo what about title section?
+            nextSection.setPreviousSection((Section) null);
+            this.getChildren().remove(currentSection);
+            nextSection.payAttention();
         }
+
     }
 
-    public Section createNewSectionAfterCaret(Structure structure)
+    public Section createNewSectionAfterCaret(Article.Structure structure)
     {
-        TextLine currentLine = ((TextLine) CaretHelper.getSelectedCaret().getParent());
+        TextLine currentLine = (TextLine) CaretHelper.getInstance().getSelectedCaret().getParent();
         Section currentSection = (Section) currentLine.getParent();
-
-        // todo create a new Section title after current Section
-
-        Section newSection;
-        if (structure.equals(Structure.MAIN_TITLE))
+        Object newSection;
+        if (structure.equals(Article.Structure.MAIN_TITLE))
         {
-            newSection = new MainTitle(theme.getTitleFontFamily(), theme.getTitleFontSize());
-        }
-        else if (structure.equals(Structure.PARAGRAPH))
+            newSection = new MainTitle(this.theme.getTitleFontFamily(), this.theme.getTitleFontSize());
+        } else if (structure.equals(Article.Structure.PARAGRAPH))
         {
-            newSection = new Paragraph(theme.getParagraphFontFamily(), theme.getParagraphFontSize());
-        }
-        else if (structure.equals(Structure.SECTION_TITLE))
+            newSection = new Paragraph(this.theme.getParagraphFontFamily(), this.theme.getParagraphFontSize());
+        } else if (structure.equals(Article.Structure.SECTION_TITLE))
         {
-            newSection = new SectionTitle(theme.getSectionFontFamily(), theme.getSectionFontSize());
-        }
-        else if (structure.equals(Structure.SUBSECTION_TITLE))
+            newSection = new SectionTitle(this.theme.getSectionFontFamily(), this.theme.getSectionFontSize());
+        } else if (structure.equals(Article.Structure.SUBSECTION_TITLE))
         {
-            newSection = new SubSectionTitle(theme.getSectionFontFamily(), theme.getSubSectionFontSize());
-        }
-        else if (structure.equals(Structure.SUBSUBSECTION_TITLE))
+            newSection = new SubSectionTitle(this.theme.getSectionFontFamily(), this.theme.getSubSectionFontSize());
+        } else if (structure.equals(Article.Structure.SUBSUBSECTION_TITLE))
         {
-            newSection = new SubSubSectionTitle(theme.getSectionFontFamily(), theme.getSubSubsectionFontSize());
-        }
-        else if (structure.equals(Structure.QUOTE))
+            newSection = new SubSubSectionTitle(this.theme.getSectionFontFamily(), this.theme.getSubSubsectionFontSize());
+        } else if (structure.equals(Article.Structure.QUOTE))
         {
-            newSection = new Quote(theme.getQuoteFontFamily(), theme.getQuoteFontSize());
-        }
-        else if (structure.equals(Structure.AUTHOR))
+            newSection = new Quote(this.theme.getQuoteFontFamily(), this.theme.getQuoteFontSize());
+        } else
         {
-            newSection = new Author(theme.getAuthorFontFamily(), theme.getAuthorFontSize());
-        }
-        else
-        {
-            throw new IllegalArgumentException("Not found this semantic!" + structure);
-        }
-
-        if (hasAuthor())
-        {
-            if (currentSection instanceof MainTitle)
+            if (!structure.equals(Article.Structure.AUTHOR))
             {
-                currentSection = currentSection.getNextSection();
+                throw new IllegalArgumentException("Not found this semantic!" + structure);
             }
+
+            newSection = new Author(this.theme.getAuthorFontFamily(), this.theme.getAuthorFontSize());
+        }
+
+        if (this.hasAuthor() && currentSection instanceof MainTitle)
+        {
+            currentSection = currentSection.getNextSection();
         }
 
         Section nextSectionOfCurrentSection = currentSection.getNextSection();
-        currentSection.setNextSection(newSection);
-        newSection.setPreviousSection(currentSection);
-        newSection.setNextSection(nextSectionOfCurrentSection);
+        currentSection.setNextSection((Section) newSection);
+        ((Section) newSection).setPreviousSection(currentSection);
+        ((Section) newSection).setNextSection(nextSectionOfCurrentSection);
         if (nextSectionOfCurrentSection != null)
         {
-            nextSectionOfCurrentSection.setPreviousSection(newSection);
+            nextSectionOfCurrentSection.setPreviousSection((Section) newSection);
         }
-        this.getChildren().add(getIndexOfSection(currentSection) + 1, newSection);
-        newSection.payAttention();
-        return newSection;
+
+        this.getChildren().add(this.getIndexOfSection(currentSection) + 1, (Node) newSection);
+        ((Section) newSection).payAttention();
+        return (Section) newSection;
     }
 
     private int getIndexOfSection(Section section)
     {
         int index = 0;
-        for (Node n : getChildren())
+
+        for (Iterator var3 = this.getChildren().iterator(); var3.hasNext(); ++index)
         {
-            if (n instanceof Section)
-            {
-                if (n == section)
-                {
-                    return index;
-                }
-                else
-                {
-                    index = index + 1;
-                }
-            }
-            else
+            Node n = (Node) var3.next();
+            if (!(n instanceof Section))
             {
                 throw new IllegalStateException("Someone betrayed us...");
             }
+
+            if (n == section)
+            {
+                return index;
+            }
         }
+
         throw new IllegalArgumentException("Section " + section + " is not in this article.");
     }
 
     public boolean hasMainTitle()
     {
-        for (Node n : getChildren())
+        Iterator var1 = this.getChildren().iterator();
+
+        Node n;
+        do
         {
-            if (n instanceof MainTitle)
+            if (!var1.hasNext())
             {
-                return true;
+                return false;
             }
-        }
-        return false;
+
+            n = (Node) var1.next();
+        } while (!(n instanceof MainTitle));
+
+        return true;
     }
 
     public void createMainTitle()
     {
-        if (this.hasMainTitle())
+        if (!this.hasMainTitle())
         {
-            //
-        }
-        else
-        {
-            Section newSection = new MainTitle(theme.getTitleFontFamily(), theme.getTitleFontSize());
+            Section newSection = new MainTitle(this.theme.getTitleFontFamily(), this.theme.getTitleFontSize());
             Section headSection = (Section) this.getChildren().get(0);
             newSection.setNextSection(headSection);
-            newSection.setPreviousSection(null);
+            newSection.setPreviousSection((Section) null);
             headSection.setPreviousSection(newSection);
             this.getChildren().add(0, newSection);
             newSection.payAttention();
         }
+
     }
 
     public boolean hasAuthor()
     {
-        for (Node n : getChildren())
+        Iterator var1 = this.getChildren().iterator();
+
+        Node n;
+        do
         {
-            if (n instanceof Author)
+            if (!var1.hasNext())
             {
-                return true;
+                return false;
             }
-        }
-        return false;
+
+            n = (Node) var1.next();
+        } while (!(n instanceof Author));
+
+        return true;
     }
 
     public boolean hasSection()
     {
-        for (Node n : getChildren())
+        Iterator var1 = this.getChildren().iterator();
+
+        Node n;
+        do
         {
-            if (n instanceof SectionTitle)
+            if (!var1.hasNext())
             {
-                return true;
+                return false;
             }
-        }
-        return false;
+
+            n = (Node) var1.next();
+        } while (!(n instanceof SectionTitle));
+
+        return true;
     }
 
     public void createAuthor()
     {
-        Section newSection = new Author(theme.getAuthorFontFamily(), theme.getAuthorFontSize());
-        if (this.hasAuthor())
+        Section newSection = new Author(this.theme.getAuthorFontFamily(), this.theme.getAuthorFontSize());
+        if (!this.hasAuthor())
         {
-
-        }
-        else
-        {
+            Section headSection;
             if (this.hasMainTitle())
             {
-                Section headSection = (Section) this.getChildren().get(0);
+                headSection = (Section) this.getChildren().get(0);
                 Section nextSection = headSection.getNextSection();
                 newSection.setNextSection(nextSection);
                 if (nextSection != null)
                 {
                     nextSection.setPreviousSection(newSection);
                 }
+
                 newSection.setPreviousSection(headSection);
                 headSection.setNextSection(newSection);
                 this.getChildren().add(1, newSection);
                 newSection.payAttention();
-            }
-            else
+            } else
             {
-                Section headSection = (Section) this.getChildren().get(0);
+                headSection = (Section) this.getChildren().get(0);
                 newSection.setNextSection(headSection);
-                newSection.setPreviousSection(null);
+                newSection.setPreviousSection((Section) null);
                 headSection.setPreviousSection(newSection);
                 this.getChildren().add(0, newSection);
                 newSection.payAttention();
             }
         }
+
     }
 
     public void payAttention()
     {
-        TextLine currentLine = ((TextLine) CaretHelper.getSelectedCaret().getParent());
+        TextLine currentLine = (TextLine) CaretHelper.getInstance().getSelectedCaret().getParent();
         currentLine.requestFocus();
     }
 
@@ -455,47 +374,52 @@ public class Article extends VBox {
         StringBuilder xml = new StringBuilder("<?xml version=\"1.0\" encoding=\"UTF-8\"?><article>");
         boolean inSection = false;
         Section lastSection = null;
-        for (Node sec : getChildren())
-        {
-            if (sec instanceof MainTitle || sec instanceof Author || sec instanceof Paragraph || sec instanceof Quote)
-            {
-                xml.append(((Section) sec).getContentInXML());
+        Iterator var4 = this.getChildren().iterator();
 
-            }
-            else
-            {
-                if (inSection)
-                {
-                    xml.append(appendLast(lastSection));
-                    inSection = false;
-                }
-                if (sec instanceof SectionTitle)
-                {
-                    xml.append(((SectionTitle) sec).getContentInXML());
-                    lastSection = (Section) sec;
-                    inSection = true;
-                }
-                else if (sec instanceof SubSectionTitle)
-                {
-                    xml.append(((SubSectionTitle) sec).getContentInXML());
-                    lastSection = (Section) sec;
-                    inSection = true;
-                }
-                else if (sec instanceof SubSubSectionTitle)
-                {
-                    xml.append(((SubSubSectionTitle) sec).getContentInXML());
-                    lastSection = (Section) sec;
-                    inSection = true;
-                }
-            }
-        }
-        if (inSection)
+        while (true)
         {
-            xml.append(appendLast(lastSection));
+            while (var4.hasNext())
+            {
+                Node sec = (Node) var4.next();
+                if (!(sec instanceof MainTitle) && !(sec instanceof Author) && !(sec instanceof Paragraph) && !(sec instanceof Quote))
+                {
+                    if (inSection)
+                    {
+                        xml.append(this.appendLast(lastSection));
+                        inSection = false;
+                    }
+
+                    if (sec instanceof SectionTitle)
+                    {
+                        xml.append(((SectionTitle) sec).getContentInXML());
+                        lastSection = (Section) sec;
+                        inSection = true;
+                    } else if (sec instanceof SubSectionTitle)
+                    {
+                        xml.append(((SubSectionTitle) sec).getContentInXML());
+                        lastSection = (Section) sec;
+                        inSection = true;
+                    } else if (sec instanceof SubSubSectionTitle)
+                    {
+                        xml.append(((SubSubSectionTitle) sec).getContentInXML());
+                        lastSection = (Section) sec;
+                        inSection = true;
+                    }
+                } else
+                {
+                    xml.append(((Section) sec).getContentInXML());
+                }
+            }
+
+            if (inSection)
+            {
+                xml.append(this.appendLast(lastSection));
+            }
+
+            xml.append("</article>");
+            System.out.println(xml);
+            return xml.toString();
         }
-        xml.append("</article>");
-        System.out.println(xml);
-        return xml.toString();
     }
 
     private String appendLast(Section section)
@@ -503,60 +427,87 @@ public class Article extends VBox {
         if (section instanceof SectionTitle)
         {
             return "</section>";
-        }
-        if (section instanceof SubSectionTitle)
+        } else if (section instanceof SubSectionTitle)
         {
             return "</subsection>";
-        }
-        if (section instanceof SubSubSectionTitle)
+        } else
         {
-            return "</subsubsection>";
+            return section instanceof SubSubSectionTitle ? "</subsubsection>" : "";
         }
-        return "";
     }
 
-    public void paint(Structure structure, Color color)
+    public void paint(Article.Structure structure, Color color)
     {
         Painter painter = Painter.getInstance();
-        if (structure.equals(Structure.MAIN_TITLE))
+        if (structure.equals(Article.Structure.MAIN_TITLE))
         {
             painter.setTitleColor(color);
-        }
-        else if (structure.equals(Structure.AUTHOR))
+        } else if (structure.equals(Article.Structure.AUTHOR))
         {
             painter.setAuthorColor(color);
-        }
-        else if (structure.equals(Structure.SECTION_TITLE)
-                || structure.equals(Structure.SUBSECTION_TITLE)
-                || structure.equals(Structure.SUBSUBSECTION_TITLE))
+        } else if (!structure.equals(Article.Structure.SECTION_TITLE) && !structure.equals(Article.Structure.SUBSECTION_TITLE) && !structure.equals(Article.Structure.SUBSUBSECTION_TITLE))
+        {
+            if (structure.equals(Article.Structure.PARAGRAPH))
+            {
+                painter.setParagraphColor(color);
+            } else
+            {
+                if (!structure.equals(Article.Structure.QUOTE))
+                {
+                    throw new IllegalArgumentException("Illegal Structure: " + structure);
+                }
+
+                painter.setQuoteColor(color);
+            }
+        } else
         {
             painter.setSectionColor(color);
-        }
-        else if (structure.equals(Structure.PARAGRAPH))
-        {
-            painter.setParagraphColor(color);
-        }
-        else if (structure.equals(Structure.QUOTE))
-        {
-            painter.setQuoteColor(color);
-        }
-        else
-        {
-            throw new IllegalArgumentException("Illgeal Structure: " + structure);
         }
 
     }
 
     public String getTitle()
     {
-        for (Node n : getChildren())
+        Iterator var1 = this.getChildren().iterator();
+
+        Node n;
+        do
         {
-            if (n instanceof MainTitle)
+            if (!var1.hasNext())
             {
-                return n.toString();
+                return null;
             }
-        }
-        return null;
+
+            n = (Node) var1.next();
+        } while (!(n instanceof MainTitle));
+
+        return n.toString();
     }
 
+    public Section getCaretSection()
+    {
+        Caret caret = CaretHelper.getInstance().getSelectedCaret();
+        if (caret != null)
+        {
+            return (Section) caret.getParent().getParent();
+        } else
+        {
+            throw new IllegalStateException("Caret not found!");
+        }
+    }
+
+    public static enum Structure
+    {
+        MAIN_TITLE,
+        SECTION_TITLE,
+        SUBSECTION_TITLE,
+        SUBSUBSECTION_TITLE,
+        PARAGRAPH,
+        QUOTE,
+        AUTHOR;
+
+        private Structure()
+        {
+        }
+    }
 }

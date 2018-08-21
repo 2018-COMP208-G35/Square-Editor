@@ -8,13 +8,16 @@
 <BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="controller.Controller"
-            prefHeight="700.0" prefWidth="1000.0" stylesheets="@/css/javaFX/editor.css">
+            prefHeight="700.0" prefWidth="1000.0" stylesheets="@/css/javaFX/editor.css"
+            fx:id="mainPane">
     <MenuBar useSystemMenuBar="true">
         <!--todo title bar-->
         <Menu text="File">
-            <!--<MenuItem>New</MenuItem>-->
-            <!--<MenuItem>Save</MenuItem>-->
-            <!--<MenuItem>Save As</MenuItem>-->
+            <MenuItem text="New" onAction="#newFile"/>
+            <MenuItem text="Save" onAction="#saveFile"/>
+            <MenuItem text="Open" onAction="#openFile"/>
+            <MenuItem text="Export to HTML" onAction="#exportToHTML"/>
+            <MenuItem text="Preview HTML" onAction="#viewInBrowser"/>
         </Menu>
         <Menu text="Insert">
 
@@ -192,12 +195,12 @@
 
     <bottom>
         <HBox
-              style="-fx-border-color: rgba(0,0,0,0.3);-fx-border-width:1 0;-fx-background-color: linear-gradient(to right, rgba(0,0,0,0.1), rgba(0,0,0,0.05));">
+                style="-fx-border-color: rgba(0,0,0,0.3);-fx-border-width:1 0;-fx-background-color: linear-gradient(to right, rgba(0,0,0,0.1), rgba(0,0,0,0.05));">
             <padding>
                 <Insets bottom="5.0" left="10.0" right="10.0" top="5.0"/>
             </padding>
             <Label text="Status" fx:id="status"/>
-            <Label alignment="CENTER_RIGHT" maxWidth="Infinity" text="Group 35 sdasdasd" HBox.hgrow="ALWAYS"/>
+            <Label alignment="CENTER_RIGHT" maxWidth="Infinity" text="Group 35" HBox.hgrow="ALWAYS"/>
         </HBox>
     </bottom>
 

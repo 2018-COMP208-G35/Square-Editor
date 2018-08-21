@@ -6,19 +6,15 @@ import view.container.TextSection;
 import view.helper.Painter;
 
 public class MainTitle extends TextSection {
-
-    public MainTitle(String fontFamily, double size)
-    {
+    public MainTitle(String fontFamily, double size) {
         super(fontFamily, size);
         this.align(Pos.CENTER);
-        getStyleClass().add("main-title");
-        setCurrentSemantic(Semantic.STRONG);
-        fill.bind(Painter.getInstance().titleColorProperty());
+        this.getStyleClass().add("main-title");
+        this.setCurrentSemantic(Semantic.STRONG);
+        this.fill.bind(Painter.getInstance().titleColorProperty());
     }
 
-    @Override
-    public String getContentInXML()
-    {
+    public String getContentInXML() {
         StringBuilder builder = new StringBuilder("<title>");
         builder.append(super.toString());
         builder.append("</title>");

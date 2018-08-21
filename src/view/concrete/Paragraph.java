@@ -6,18 +6,15 @@ import view.container.TextSection;
 import view.helper.Painter;
 
 public class Paragraph extends TextSection {
-    public Paragraph(String fontFamily, double size)
-    {
+    public Paragraph(String fontFamily, double size) {
         super(fontFamily, size);
         this.align(Pos.TOP_LEFT);
-        getStyleClass().add("paragraph");
-        setCurrentSemantic(Semantic.NORMAL);
-        fill.bind(Painter.getInstance().paragraphColorProperty());
+        this.getStyleClass().add("paragraph");
+        this.setCurrentSemantic(Semantic.NORMAL);
+        this.fill.bind(Painter.getInstance().paragraphColorProperty());
     }
 
-    @Override
-    public String getContentInXML()
-    {
+    public String getContentInXML() {
         StringBuilder builder = new StringBuilder("<paragraph>");
         builder.append(super.getContentInXML());
         builder.append("</paragraph>");

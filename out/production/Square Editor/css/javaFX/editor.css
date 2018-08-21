@@ -2,7 +2,6 @@
     -fx-focus-traversable: false;
 }
 
-
 .scroll-pane {
     -fx-fit-to-height: false;
 }

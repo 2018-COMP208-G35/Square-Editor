@@ -1,33 +1,35 @@
 package view.container;
 
+import javafx.event.EventHandler;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 
-public abstract class Section extends VBox {
+public abstract class Section extends VBox
+{
     protected Section previousSection;
     protected Section nextSection;
 
     public Section()
     {
-        init();
+        this.init();
     }
 
     private void init()
     {
-        setUpHandlers();
+        this.setUpHandlers();
     }
 
     public Section(Section previousSection, Section nextSection)
     {
         this.previousSection = previousSection;
         this.nextSection = nextSection;
-        init();
+        this.init();
     }
 
     public Section getPreviousSection()
     {
-        return previousSection;
+        return this.previousSection;
     }
 
     public void setPreviousSection(Section previousSection)
@@ -37,7 +39,7 @@ public abstract class Section extends VBox {
 
     public Section getNextSection()
     {
-        return nextSection;
+        return this.nextSection;
     }
 
     public void setNextSection(Section nextSection)
@@ -55,9 +57,9 @@ public abstract class Section extends VBox {
         this.setOnMousePressed(this::getOnMousePressed);
     }
 
-    protected abstract void getOnMousePressed(MouseEvent mouseEvent);
+    protected abstract void getOnMousePressed(MouseEvent var1);
 
-    protected abstract void getOnKeyPressed(KeyEvent keyEvent);
+    protected abstract void getOnKeyPressed(KeyEvent var1);
 
     public abstract boolean isEmpty();
 

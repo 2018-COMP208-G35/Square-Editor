@@ -62,7 +62,7 @@
         </strong>
     </xsl:template>
 
-    <xsl:template match="/article//paragraph/emphasize">
+    <xsl:template match="/article//paragraph/emphasis">
         <em>
             <xsl:apply-templates/>
         </em>

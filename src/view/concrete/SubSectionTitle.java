@@ -6,24 +6,18 @@ import view.container.TextSection;
 import view.helper.Painter;
 
 public class SubSectionTitle extends TextSection {
-
-    public SubSectionTitle(String fontFamily, double size)
-    {
+    public SubSectionTitle(String fontFamily, double size) {
         super(fontFamily, size);
         this.align(Pos.TOP_LEFT);
-        getStyleClass().addAll("subsection-title", "section");
-        currentSemantic = Semantic.STRONG;
-        fill.bind(Painter.getInstance().sectionColorProperty());
+        this.getStyleClass().addAll(new String[]{"subsection-title", "section"});
+        this.currentSemantic = Semantic.STRONG;
+        this.fill.bind(Painter.getInstance().sectionColorProperty());
     }
 
-    @Override
-    public String getContentInXML()
-    {
+    public String getContentInXML() {
         StringBuilder builder = new StringBuilder("<subsection><title>");
         builder.append(super.toString());
         builder.append("</title>");
-//        builder.append("</subsection>");
         return builder.toString();
     }
-
 }
