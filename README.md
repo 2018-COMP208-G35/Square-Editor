@@ -1,6 +1,6 @@
 # Square-Editor
 
-This is the coursework project of COMP208@LIV. 
+This is a coursework project of COMP208@LIV. 
 Square Editor is a rich Text Editor written in JavaFX. It was intended to provide a different editing experience with preset formatting of different sections. Nevertheless, this is a very naive project and doesn't work well in practice.
 
 ## Why it's a naive work?
